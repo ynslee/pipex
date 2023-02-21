@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:59:12 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/02/17 15:07:41 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/02/21 11:05:05 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,21 @@
 # include <stdlib.h>
 # include <stdio.h>//perror, strerror
 # include <sys/wait.h>//wait, waitpid
+# include <fcntl.h>
+# include <errno.h>
+# include <string.h>
+# include "libft/ft_printf.h"
 
-
+typedf	strcut s_pipex{
+	char	*cmd1;
+	char	*cmd2;
+	char	*cmd1_path;
+	char	*cmd2_path;
+	char	**cmd1_argv;
+	char	**cmd2_argv;
+	char	**env;
+	int 	fd[2];
+}			t_pipex;
 
 
 
