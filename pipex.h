@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:59:12 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/02/21 11:05:05 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/02/21 13:41:05 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedf	strcut s_pipex{
 	int 	fd[2];
 }			t_pipex;
 
-
+void argv_iscorrect(t_pipex *pipex, char **argv)
 
 
 #endif
