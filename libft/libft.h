@@ -3,18 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoonseonlee <yoonslee@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 14:16:10 by yoonslee          #+#    #+#             */
-/*   Updated: 2022/11/15 13:13:13 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/02/22 11:14:21 by yoonslee      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif
+
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdarg.h>
 
 typedef struct s_list
 {
@@ -65,5 +70,22 @@ void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+char	*get_next_line(int fd);
+char	*read_line(char *stash, int fd);
+char	*get_single_line(char *stash);
+char	*save_line(char	*stash);
+int		ft_printstr(char *str);
+int		ft_printnbr(int n);
+int		ft_printnbr_unsigned(unsigned int n);
+int		ft_printchr(int c);
+int		ft_check(char c, va_list ap);
+int		ft_printf(const char *str, ...);
+int		ft_printhex_small(unsigned int n);
+int		ft_printhex_big(unsigned int n);
+int		ft_printptr(unsigned long long n);
+char	*get_next_line_bonus(int fd);
+char	*read_line_bonus(char *stash, int fd);
+char	*get_single_line_bonus(char *stash);
+char	*save_line_bonus(char	*stash);
 
 #endif

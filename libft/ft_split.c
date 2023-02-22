@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoonseonlee <yoonseonlee@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 14:20:31 by yoonslee          #+#    #+#             */
-/*   Updated: 2022/11/17 08:09:44 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/02/22 20:02:46 by yoonseonlee      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,7 @@ static char	**ft_freeall(char **out)
 static void	ft_putintostr(char **str, char const *s, char c)
 {
 	char const	*tmp;
-	int			i;
 
-	i = 0;
 	tmp = s;
 	while (*tmp)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoonseonlee <yoonseonlee@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 15:15:18 by yoonslee          #+#    #+#             */
-/*   Updated: 2022/11/17 08:10:23 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/02/22 11:12:23 by yoonseonlee      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ void	*ft_calloc(size_t count, size_t size)
 	if (count == 0 || size == 0)
 	{
 		str = malloc (1);
-		if (str == NULL)
+		if (!str)
 			return (NULL);
 		return (str);
 	}
-	if (count * size % size != 0)
+	if (count * size / size != count)
 		return (NULL);
-	str = malloc(count * size);
+	str = (void *)malloc(count * size);
 	if (!str)
 		return (0);
 	while (i < count * size)

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yoonseonlee <yoonseonlee@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 11:44:32 by yoonslee          #+#    #+#             */
-/*   Updated: 2022/12/01 15:07:54 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/02/22 19:53:35 by yoonseonlee      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "libft.h"
 
-char	*read_line(char *stash, int fd)
+char	*read_line_bonus(char *stash, int fd)
 {
 	int		byte_read;
 	char	*buf;
@@ -36,7 +36,7 @@ char	*read_line(char *stash, int fd)
 	return (stash);
 }
 
-char	*get_single_line(char *stash)
+char	*get_single_line_bonus(char *stash)
 {
 	int		i;
 	char	*out;
@@ -62,7 +62,7 @@ char	*get_single_line(char *stash)
 	return (out);
 }
 
-char	*save_line(char	*stash)
+char	*save_line_bonus(char	*stash)
 {
 	char	*ud_stash;
 	int		i;
@@ -88,7 +88,7 @@ char	*save_line(char	*stash)
 	return (ud_stash);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line_bonus(int fd)
 {
 	static char	*stash[4096];
 	char		*out;
@@ -102,10 +102,10 @@ char	*get_next_line(int fd)
 			return (NULL);
 		stash[fd][0] = '\0';
 	}
-	stash[fd] = read_line(stash[fd], fd);
+	stash[fd] = read_line_bonus(stash[fd], fd);
 	if (!stash[fd])
 		return (NULL);
-	out = get_single_line(stash[fd]);
-	stash[fd] = save_line(stash[fd]);
+	out = get_single_line_bonus(stash[fd]);
+	stash[fd] = save_line_bonus(stash[fd]);
 	return (out);
 }
