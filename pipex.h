@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:59:12 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/02/23 15:12:50 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/02/24 11:36:56 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ typedf	strcut s_pipex{
 	char	*cmd_path;
 	char	**cmd1_argv;
 	char	**cmd2_argv;
-	char	**env;
+	char	**envp;
 	int 	fd[2];
+	int		infile;
+	int		outfile;
 	int		pid1;
 	int 	pid2;
 }			t_pipex;

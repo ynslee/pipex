@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yoonseonlee <yoonseonlee@student.42.fr>    +#+  +:+       +#+         #
+#    By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/02 13:37:28 by yoonslee          #+#    #+#              #
-#    Updated: 2023/02/22 19:59:07 by yoonseonlee      ###   ########.fr        #
+#    Updated: 2023/02/24 09:41:34 by yoonslee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,10 +28,12 @@ FLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
-$(NAME):
-		${CC} -c ${FLAGS} $(SRCS) -I $(HEADER)
-		ar rc $(NAME) $(OBJS)
+$(NAME):$(OBJS)
+		ar rcs $(NAME) $(OBJS)
 		ranlib $(NAME)
+
+$(OBJS):$(SRCS)
+		${CC} -c ${FLAGS} $(SRCS) -I $(HEADER)
 
 clean:
 		rm -rf $(OBJS)

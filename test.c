@@ -152,6 +152,7 @@ char	**ft_split(char const *s, char c)
 // 	path = 
 
 // }
+
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char			*out;
@@ -202,10 +203,39 @@ char	**get_env(char **env)
 	return (path_env);
 }
 
-int	main(int argc, char** argv, char **env)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	
-	printf("tttt %s\n", env[1]);
-	printf("find env: %s", *get_env(env));
+	char	*out;
+	size_t	i;
+	size_t	j;
+
+	if (!s1 || !s2)
+		return (NULL);
+	out = calloc((ft_strlen(s1) + ft_strlen(s2) + 1), sizeof(char));
+	if (!out)
+		return (NULL);
+	i = -1;
+	j = 0;
+	if (s1)
+		while (s1[++i] != '\0')
+			out[i] = s1[i];
+	while (s2[j] != '\0')
+		out[i++] = s2[j++];
+	out[ft_strlen(s1) + ft_strlen(s2)] = '\0';
+	free((void *)s1);
+	s1 = NULL;
+	return (out);
+}
+
+
+int	main()
+{
+	char str[] = "Hello";
+	char str2[] = "World";
+	char *result;
+
+
+	result = ft_strjoin(str + "/", str2);
+	printf("result is: %s", result);
 	return (0);
 }
