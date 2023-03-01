@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:59:01 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/03/01 14:37:12 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/01 15:45:31 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,22 @@ The execve system call is commonly used in Unix systems to implement the functio
 // 	return (cmd);
 // }
 
-// int	argv_check(char **argv, t_pipex *pipex)
-// {
-// 	pipex->infile = open(argv[1], O_RDONLY);
-// 	if (pipex->infile == -1)
-// 		perror("Infile error!");
-// 	pipex->outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-// 	if (pipex->outfile == -1)
-// 		perror("Outfile error!");
-// 	pipex->cmd1_argv = split_command(argv[2]);
-// 	if (!pipex->cmd1_argv)
-// 		exit(1);
-// 	pipex->cmd2_argv = split_command(argv[3]);
-// 	if (!pipex->cmd2_argv)
-// 		exit(1);
-// 	return (0);
-// }
+int	argv_check(char **argv, t_pipex *pipex)
+{
+	pipex->infile = open(argv[1], O_RDONLY);
+	if (pipex->infile == -1)
+		perror("Infile error!");
+	pipex->outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (pipex->outfile == -1)
+		perror("Outfile error!");
+	pipex->cmd1_argv = split_command(argv[2]);
+	if (!pipex->cmd1_argv)
+		// exit(1);
+	pipex->cmd2_argv = split_command(argv[3]);
+	if (!pipex->cmd2_argv)
+		// exit(1);
+	return (0);
+}
 
 char	*find_path(t_pipex *pipex, char **envp)
 {
@@ -83,19 +83,22 @@ char	*find_path(t_pipex *pipex, char **envp)
 	return (path);
 }
 
-// void	first_child_process(t_pipex *pipex)
-// {
-// 	if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
-// 		exit(1);
-// 	close (pipex->infile);
-// 	if (dup2(pipex->infile, STDIN_FILENO) == -1)
-// 		exit(1);
-// 	close(pipex->fd[1]);
-// 	pipex->cmd1_path = get_path(pipex, pipex->cmd1_argv);
-// 	if (!pipex->cmd1_path)
-// 		exit(1);
-// 	execve(pipex->cmd1_path, args, pipex->envp);
-// }
+void	first_child_process(t_pipex *pipex)
+{
+	close(pipex->fd[0]);
+	if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
+		exit(1);
+	if (dup2(pipex->infile, STDIN_FILENO) == -1)
+		exit(1);
+	// close(pipex->fd[1]);
+	pipex->cmd1_path = get_path(pipex, pipex->cmd1_argv);
+	if (!pipex->cmd1_path)
+	{
+		ft_putstr_fd("Error; cmd1 not found\n", 2);
+		exit(1);
+	}
+	execve(pipex->cmd1_path, args, pipex->envp);
+}
 
 // void *get_path(t_pipex *pipex, char **cmd)
 // {
@@ -127,15 +130,15 @@ int	main(int argc, char *argv[], char **envp)
 	argv_check(argv, pipex);
 	pipex->env = find_path(pipex, envp);
 	pipex->path = ft_split(pipex->env, ':');
-	// if (!pipex->path)
-	// 	exit(1);
-	// if (pipe(pipex->fd[2]) == -1)
-	// 	return (ft_printf("problem when making a pipe!\n"));
-	// pipex->pid1 = fork();
-	// if (pipex->pid1 < 0)
-	// 	exit(1);
-	// if (pipex->pid1 == 0)
-	// 	first_child_process(pipex);
+	if (!pipex->path)
+		exit(1);
+	if (pipe(pipex->fd[2]) == -1)
+		return (ft_printf("problem when making a pipe!\n"));
+	pipex->pid1 = fork();
+	if (pipex->pid1 < 0)
+		exit(1);
+	if (pipex->pid1 == 0)
+		first_child_process(pipex);
 
 	// int i = 0;
 	// while (pipex->cmd1_argv[i])
