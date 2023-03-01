@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:59:12 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/02/24 11:36:56 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/01 14:11:00 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,24 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <string.h>
-# include "libft/ft_printf.h"
+# include "libft/libft.h"
 
-typedf	strcut s_pipex{
+typedef struct s_pipex{
 	char	*cmd1;
 	char	*cmd2;
-	char	*path;
-	char	*cmd_path;
+	char	**path;
+	char	*cmd1_path;
+	char	*cmd2_path;
 	char	**cmd1_argv;
 	char	**cmd2_argv;
-	char	**envp;
-	int 	fd[2];
+	char	*env;
+	int		fd[2];
+	int		read[0];
+	int		write[1];
 	int		infile;
 	int		outfile;
 	int		pid1;
-	int 	pid2;
+	int		pid2;
 }			t_pipex;
 
 #endif
