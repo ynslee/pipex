@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:59:01 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/03/02 16:28:53 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/02 17:09:42 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,62 +119,6 @@ void	find_path(t_pipex *pipex, char **envp)
 		error_msg(pipex, 5);
 }
 
-void	first_child_process(t_pipex *pipex)
-{
-	pipex->pid1 = fork();
-	if (pipex->pid1 < 0)
-		exit(1);
-	if (pipex->pid1 == 0)
-	{
-		if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
-			exit(1);
-		if (dup2(pipex->infile, STDIN_FILENO) == -1)
-			exit(1);
-		close(pipex->infile);
-		close(pipex->fd[1]);
-		close(pipex->fd[0]);
-		close(pipex->outfile);
-		if (!pipex->cmd1_path)
-		{
-			ft_putstr_fd("Error; cmd1 not found\n", 2);
-			exit(1);
-		}
-		if (execve(pipex->cmd1_path, pipex->cmd1_argv, pipex->path) < 0)
-		{
-			perror("error, child1 execve failed");
-			exit(1);
-		}
-	}
-}
-
-void	second_child_process(t_pipex *pipex)
-{
-	pipex->pid2 = fork();
-	if (pipex->pid2 < 0)
-		error_msg(pipex, 3);
-	if (pipex->pid2 == 0)
-	{
-		if (dup2(pipex->fd[0], STDIN_FILENO) == -1)
-			exit(1);
-		if (dup2(pipex->outfile, STDOUT_FILENO) == -1)
-			exit(1);
-		close(pipex->infile);
-		close(pipex->fd[1]);
-		close(pipex->fd[0]);
-		close(pipex->outfile);
-		if (!pipex->cmd2_path)
-		{
-			ft_putstr_fd("Error; cmd2 not found\n", 2);
-			exit(1);
-		}
-		if (execve(pipex->cmd2_path, pipex->cmd2_argv, pipex->path) < 0)
-		{
-			perror("error, child1 execve failed");
-			exit(1);
-		}
-	}
-}
-
 char	*get_path(t_pipex *pipex, char **cmd)
 {
 	int		i;
@@ -199,45 +143,6 @@ char	*get_path(t_pipex *pipex, char **cmd)
 	return (NULL);
 }
 
-void	free_str_array(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		free(str[i]);
-		i++;
-	}
-	free(str);
-}
-
-void	free_all(t_pipex *pipex)
-{
-	// free(pipex->cmd1);
-	// free(pipex->cmd2);
-	free(pipex->path);
-	if (pipex->cmd1_path)
-		free(pipex->cmd1_path);
-	if (pipex->cmd2_path)
-		free(pipex->cmd2_path);
-	free_str_array(pipex->cmd1_argv);
-	free_str_array(pipex->cmd2_argv);
-	free(pipex);
-}
-
-void	close_all(t_pipex *pipex)
-{
-	if (pipex->infile > 0)
-		close(pipex->infile);
-	if (pipex->outfile > 0)
-		close(pipex->outfile);
-	if (pipex->fd[0] > 0)
-		close(pipex->fd[0]);
-	if (pipex->fd[1] > 0)
-		close(pipex->fd[1]);
-}
-
 int	main(int argc, char *argv[], char **envp)
 {
 	t_pipex	*pipex;
@@ -247,6 +152,7 @@ int	main(int argc, char *argv[], char **envp)
 	else
 	{
 		pipex = ft_calloc(1, sizeof(t_pipex));
+		pipex->envp = envp;
 		if (!pipex)
 			error_msg(pipex, 5);
 		argv_check(argv, pipex);

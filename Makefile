@@ -6,14 +6,14 @@
 #    By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/17 14:59:05 by yoonslee          #+#    #+#              #
-#    Updated: 2023/03/02 16:42:28 by yoonslee         ###   ########.fr        #
+#    Updated: 2023/03/02 16:58:51 by yoonslee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME = pipex
 
-SRCS = pipex.c error_msg.c
+SRCS = pipex.c error_msg.c children_process.c free_close.c
 OBJS = $(SRCS:.c=.o)
 FLAGS = -Wall -Wextra -Werror
 
