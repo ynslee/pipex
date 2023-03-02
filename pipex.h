@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:59:12 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/03/01 15:39:21 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/02 15:37:43 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,8 @@ typedef struct s_pipex{
 	int		pid1;
 	int		pid2;
 }			t_pipex;
+
+void	error_msg(t_pipex *pipex, int error_code);
+
 
 #endif

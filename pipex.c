@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:59:01 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/03/01 15:45:31 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/02 16:28:53 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,41 @@ The execve system call is commonly used in Unix systems to implement the functio
 // 	char	**cmd;
 // 	int		i;
 
-// 	cmd = ft_split(argv, ' ');
+// 	// cmd = ft_split(argv, ' ');
 // 	i = 0;
-// 	while (cmd[i])
+// 	if (ft_strchr(argv[i], 39) != 0)
+// 		has_single_quote(argv)
+// 		while (argv[i])
+// 		{
+// 			if (argv[i] = 39)
+// 				break;
+// 			i++;
+// 		}
+// 			while
+// 	return (cmd);
+// }
+
+// char *has_single_quote(char *argv)
+// {
+// 	char	*cmd;
+// 	int		i;
+// 	int		j;
+
+// 	i = 0;
+// 	while (!argv[i])
 // 	{
-// 		if (ft_strchr(cmd[i], ' ') != 0)
-// 			cmd[i] = ft_strtrim(cmd[i], " ");
+// 		j++;
+// 		if (argv[i] == 39)
+// 			break ;
 // 		i++;
 // 	}
-// 	return (cmd);
+// 	while (!argv[j])
+// 	{
+// 		if (argv[j] == 39)
+// 			break ;
+// 		j++;
+// 	}
+// 	cmd = ft_substr(argv, i, j - i + 1);
 // }
 
 int	argv_check(char **argv, t_pipex *pipex)
@@ -55,16 +81,22 @@ int	argv_check(char **argv, t_pipex *pipex)
 	pipex->outfile = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (pipex->outfile == -1)
 		perror("Outfile error!");
-	pipex->cmd1_argv = split_command(argv[2]);
+	// pipex->cmd1_argv = split_command(argv[2]);
+	// if (!pipex->cmd1_argv)
+	// 	// exit(1);
+	// pipex->cmd2_argv = split_command(argv[3]);
+	// if (!pipex->cmd2_argv)
+	// 	// exit(1);
+	pipex->cmd1_argv = ft_split(argv[2], ' ');
 	if (!pipex->cmd1_argv)
-		// exit(1);
-	pipex->cmd2_argv = split_command(argv[3]);
+		error_msg(pipex, 5);
+	pipex->cmd2_argv = ft_split(argv[3], ' ');
 	if (!pipex->cmd2_argv)
-		// exit(1);
+		error_msg(pipex, 5);
 	return (0);
 }
 
-char	*find_path(t_pipex *pipex, char **envp)
+void	find_path(t_pipex *pipex, char **envp)
 {
 	int		i;
 	char	*path;
@@ -77,46 +109,134 @@ char	*find_path(t_pipex *pipex, char **envp)
 		else
 			i++;
 	}
+	if (!envp[i])
+		error_msg(pipex, 2);
 	path = ft_substr(envp[i], 5, ft_strlen(envp[i]));
 	if (!path)
-		return (NULL);
-	return (path);
+		error_msg(pipex, 5);
+	pipex->path = ft_split(path, ':');
+	if (!pipex->path)
+		error_msg(pipex, 5);
 }
 
 void	first_child_process(t_pipex *pipex)
 {
-	close(pipex->fd[0]);
-	if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
+	pipex->pid1 = fork();
+	if (pipex->pid1 < 0)
 		exit(1);
-	if (dup2(pipex->infile, STDIN_FILENO) == -1)
-		exit(1);
-	// close(pipex->fd[1]);
-	pipex->cmd1_path = get_path(pipex, pipex->cmd1_argv);
-	if (!pipex->cmd1_path)
+	if (pipex->pid1 == 0)
 	{
-		ft_putstr_fd("Error; cmd1 not found\n", 2);
-		exit(1);
+		if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
+			exit(1);
+		if (dup2(pipex->infile, STDIN_FILENO) == -1)
+			exit(1);
+		close(pipex->infile);
+		close(pipex->fd[1]);
+		close(pipex->fd[0]);
+		close(pipex->outfile);
+		if (!pipex->cmd1_path)
+		{
+			ft_putstr_fd("Error; cmd1 not found\n", 2);
+			exit(1);
+		}
+		if (execve(pipex->cmd1_path, pipex->cmd1_argv, pipex->path) < 0)
+		{
+			perror("error, child1 execve failed");
+			exit(1);
+		}
 	}
-	execve(pipex->cmd1_path, args, pipex->envp);
 }
 
-// void *get_path(t_pipex *pipex, char **cmd)
-// {
-// 	int		i;
-// 	char	*path_env;
+void	second_child_process(t_pipex *pipex)
+{
+	pipex->pid2 = fork();
+	if (pipex->pid2 < 0)
+		error_msg(pipex, 3);
+	if (pipex->pid2 == 0)
+	{
+		if (dup2(pipex->fd[0], STDIN_FILENO) == -1)
+			exit(1);
+		if (dup2(pipex->outfile, STDOUT_FILENO) == -1)
+			exit(1);
+		close(pipex->infile);
+		close(pipex->fd[1]);
+		close(pipex->fd[0]);
+		close(pipex->outfile);
+		if (!pipex->cmd2_path)
+		{
+			ft_putstr_fd("Error; cmd2 not found\n", 2);
+			exit(1);
+		}
+		if (execve(pipex->cmd2_path, pipex->cmd2_argv, pipex->path) < 0)
+		{
+			perror("error, child1 execve failed");
+			exit(1);
+		}
+	}
+}
 
-// 	i = 0;
-// 	while (pipex->envp[i])
-// 	{
-// 		path_env = ft_strjoin(pipex->envp[i], "/");
-// 		path_env = ft_strjoin(path_env, cmd[0]);
-// 		if (access(path_env, X_OK) == 0)
-// 			return (path_env);
-// 		free(path_env);
-// 		i++;
-// 	}
-// 	return (NULL);
-// }
+char	*get_path(t_pipex *pipex, char **cmd)
+{
+	int		i;
+	char	*path_tmp;
+	char	*path_env;
+
+	i = 0;
+	while (pipex->path[i])
+	{
+		path_tmp = ft_strjoin(pipex->path[i], "/");
+		if (!path_tmp)
+			error_msg(pipex, 5);
+		path_env = ft_strjoin(path_tmp, cmd[0]);
+		free(path_tmp);
+		if (!path_env)
+			error_msg(pipex, 5);
+		if (access(path_env, X_OK) == 0)
+			return (path_env);
+		free(path_env);
+		i++;
+	}
+	return (NULL);
+}
+
+void	free_str_array(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+		i++;
+	}
+	free(str);
+}
+
+void	free_all(t_pipex *pipex)
+{
+	// free(pipex->cmd1);
+	// free(pipex->cmd2);
+	free(pipex->path);
+	if (pipex->cmd1_path)
+		free(pipex->cmd1_path);
+	if (pipex->cmd2_path)
+		free(pipex->cmd2_path);
+	free_str_array(pipex->cmd1_argv);
+	free_str_array(pipex->cmd2_argv);
+	free(pipex);
+}
+
+void	close_all(t_pipex *pipex)
+{
+	if (pipex->infile > 0)
+		close(pipex->infile);
+	if (pipex->outfile > 0)
+		close(pipex->outfile);
+	if (pipex->fd[0] > 0)
+		close(pipex->fd[0]);
+	if (pipex->fd[1] > 0)
+		close(pipex->fd[1]);
+}
 
 int	main(int argc, char *argv[], char **envp)
 {
@@ -124,41 +244,25 @@ int	main(int argc, char *argv[], char **envp)
 
 	if (argc != 5)
 		return (ft_printf("Wrong amount of arguments!\n"));
-	pipex = malloc(sizeof(t_pipex));// change it to ft_calloc later.
-	if (!pipex)
-		return (ft_printf("error in allocating pipex"));
-	argv_check(argv, pipex);
-	pipex->env = find_path(pipex, envp);
-	pipex->path = ft_split(pipex->env, ':');
-	if (!pipex->path)
-		exit(1);
-	if (pipe(pipex->fd[2]) == -1)
-		return (ft_printf("problem when making a pipe!\n"));
-	pipex->pid1 = fork();
-	if (pipex->pid1 < 0)
-		exit(1);
-	if (pipex->pid1 == 0)
-		first_child_process(pipex);
-
-	// int i = 0;
-	// while (pipex->cmd1_argv[i])
-	// {
-	// 	printf("%s\n", pipex->cmd1_argv[i]);
-	// 	i++;
-	// }
-	// i = 0;
-	// while (pipex->cmd2_argv[i])
-	// {
-	// 	printf("%s\n", pipex->cmd2_argv[i]);
-	// 	i++;
-	// }
-	int i = 0;
-	while (pipex->path[i])
+	else
 	{
-		printf("%s\n", pipex->path[i]);
-		i++;
+		pipex = ft_calloc(1, sizeof(t_pipex));
+		if (!pipex)
+			error_msg(pipex, 5);
+		argv_check(argv, pipex);
+		find_path(pipex, envp);
+		if (pipe(pipex->fd) == -1)
+			return (ft_printf("problem when making a pipe!\n"));
+		pipex->cmd1_path = get_path(pipex, pipex->cmd1_argv);
+		pipex->cmd2_path = get_path(pipex, pipex->cmd2_argv);
+		first_child_process(pipex);
+		second_child_process(pipex);
+		close_all(pipex);
+		waitpid(pipex->pid1, NULL, 0);
+		waitpid(pipex->pid2, NULL, 0);
+		free_all(pipex);
 	}
-	printf("%s\n", pipex->env);
-
 	return (0);
 }
+
+

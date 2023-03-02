@@ -222,8 +222,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (s2[j] != '\0')
 		out[i++] = s2[j++];
 	out[ft_strlen(s1) + ft_strlen(s2)] = '\0';
-	free((void *)s1);
-	s1 = NULL;
 	return (out);
 }
 

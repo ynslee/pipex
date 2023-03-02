@@ -6,14 +6,14 @@
 #    By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/17 14:59:05 by yoonslee          #+#    #+#              #
-#    Updated: 2023/02/24 09:38:31 by yoonslee         ###   ########.fr        #
+#    Updated: 2023/03/02 16:42:28 by yoonslee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME = pipex
 
-SRCS = main.c 
+SRCS = pipex.c error_msg.c
 OBJS = $(SRCS:.c=.o)
 FLAGS = -Wall -Wextra -Werror
 
@@ -21,7 +21,6 @@ all: $(NAME)
 
 $(NAME):$(OBJS)
 	make -C libft all
-	make -C libft bonus
 	cc $(FLAGS) $(OBJS) libft/libft.a -o $(NAME)
 
 $(OBJS):$(SRCS)
@@ -37,4 +36,4 @@ fclean:clean
 
 re: fclean clean all
 
-.PHONY: all bonus clean fclean re
+.PHONY: all clean fclean re
