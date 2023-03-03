@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:59:01 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/03/03 13:42:58 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:44:55 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,10 @@ int	argv_check(char **argv, t_pipex *pipex)
 	// 	// exit(1);
 	pipex->cmd1_argv = ft_split(argv[2], ' ');
 	if (!pipex->cmd1_argv)
-		perror("no first command!");
+		error_alloc2(pipex->cmd1_argv);
 	pipex->cmd2_argv = ft_split(argv[3], ' ');
 	if (!pipex->cmd2_argv)
-		perror("no second command!");
+		error_alloc2(pipex->cmd2_argv);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:34:50 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/03/03 14:05:57 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:47:02 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ void	error_msg(t_pipex *pipex, int error_code)
 	if (error_code == 3)
 		ft_putstr_fd("Error; fork failed\n", 2);
 	if (pipex)
-
-	exit (error_code);
+		exit(error_code);
 }
 
 /*
@@ -38,4 +37,10 @@ void	error_alloc(char *str)
 	ft_putstr_fd("Error; allocation failure!\n", 2);
 	free(str);
 	str = NULL;
+}
+
+void	error_alloc2(char **str)
+{
+	ft_putstr_fd("Error; allocation failure!\n", 2);
+	free_str_array(str);
 }
