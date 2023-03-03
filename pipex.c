@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:59:01 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/03/02 17:09:42 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/03 13:42:58 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,10 @@ int	argv_check(char **argv, t_pipex *pipex)
 	// 	// exit(1);
 	pipex->cmd1_argv = ft_split(argv[2], ' ');
 	if (!pipex->cmd1_argv)
-		error_msg(pipex, 5);
+		perror("no first command!");
 	pipex->cmd2_argv = ft_split(argv[3], ' ');
 	if (!pipex->cmd2_argv)
-		error_msg(pipex, 5);
+		perror("no second command!");
 	return (0);
 }
 
@@ -123,21 +123,22 @@ char	*get_path(t_pipex *pipex, char **cmd)
 {
 	int		i;
 	char	*path_tmp;
-	char	*path_env;
+	char	*path_cmd;
 
 	i = 0;
 	while (pipex->path[i])
 	{
 		path_tmp = ft_strjoin(pipex->path[i], "/");
 		if (!path_tmp)
-			error_msg(pipex, 5);
-		path_env = ft_strjoin(path_tmp, cmd[0]);
+			error_alloc(path_tmp);
+		path_cmd = ft_strjoin(path_tmp, cmd[0]);
 		free(path_tmp);
-		if (!path_env)
-			error_msg(pipex, 5);
-		if (access(path_env, X_OK) == 0)
-			return (path_env);
-		free(path_env);
+		if (!path_cmd)
+			free(path_cmd);
+		if (access(path_cmd, X_OK) == 0)
+			return (path_cmd);
+		free(path_cmd);
+		path_cmd = NULL;
 		i++;
 	}
 	return (NULL);

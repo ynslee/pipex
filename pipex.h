@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:59:12 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/03/02 17:08:26 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:03:50 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 # include "libft/libft.h"
 
 typedef struct s_pipex{
-	char	*cmd1;
-	char	*cmd2;
 	char	**path;
 	char	*cmd1_path;
 	char	*cmd2_path;
@@ -39,6 +37,7 @@ typedef struct s_pipex{
 }			t_pipex;
 
 void	error_msg(t_pipex *pipex, int error_code);
+void	error_alloc(char *str);
 void	free_str_array(char **str);
 void	free_all(t_pipex *pipex);
 void	close_all(t_pipex *pipex);

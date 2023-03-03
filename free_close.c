@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 16:54:10 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/03/02 16:59:19 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:05:11 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ void	free_str_array(char **str)
 
 void	free_all(t_pipex *pipex)
 {
-	// free(pipex->cmd1);
-	// free(pipex->cmd2);
 	free(pipex->path);
 	if (pipex->cmd1_path)
 		free(pipex->cmd1_path);

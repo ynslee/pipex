@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 16:56:26 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/03/02 17:08:51 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:26:07 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,11 @@ void	first_child_process(t_pipex *pipex)
 			exit(1);
 		if (dup2(pipex->infile, STDIN_FILENO) == -1)
 			exit(1);
-		close(pipex->infile);
-		close(pipex->fd[1]);
-		close(pipex->fd[0]);
-		close(pipex->outfile);
+		close_all(pipex);
 		if (!pipex->cmd1_path)
 		{
-			ft_putstr_fd("Error; cmd1 not found\n", 2);
-			exit(1);
+			ft_putstr_fd("Error; first command not found\n", 2);
+			exit(127);
 		}
 		if (execve(pipex->cmd1_path, pipex->cmd1_argv, pipex->envp) < 0)
 		{
@@ -51,14 +48,11 @@ void	second_child_process(t_pipex *pipex)
 			exit(1);
 		if (dup2(pipex->outfile, STDOUT_FILENO) == -1)
 			exit(1);
-		close(pipex->infile);
-		close(pipex->fd[1]);
-		close(pipex->fd[0]);
-		close(pipex->outfile);
+		close_all(pipex);
 		if (!pipex->cmd2_path)
 		{
-			ft_putstr_fd("Error; cmd2 not found\n", 2);
-			exit(1);
+			ft_putstr_fd("Error; second command not found\n", 2);
+			exit(127);
 		}
 		if (execve(pipex->cmd2_path, pipex->cmd2_argv, pipex->envp) < 0)
 		{
