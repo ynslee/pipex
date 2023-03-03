@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:59:01 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/03/03 14:44:55 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/03 15:05:42 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,10 @@ void	find_path(t_pipex *pipex, char **envp)
 		error_msg(pipex, 2);
 	path = ft_substr(envp[i], 5, ft_strlen(envp[i]));
 	if (!path)
-		error_msg(pipex, 5);
+		error_alloc(path);
 	pipex->path = ft_split(path, ':');
 	if (!pipex->path)
-		error_msg(pipex, 5);
+		error_alloc2(pipex->path);
 }
 
 char	*get_path(t_pipex *pipex, char **cmd)
@@ -153,9 +153,9 @@ int	main(int argc, char *argv[], char **envp)
 	else
 	{
 		pipex = ft_calloc(1, sizeof(t_pipex));
-		pipex->envp = envp;
 		if (!pipex)
-			error_msg(pipex, 5);
+			error_msg(pipex, 2);
+		pipex->envp = envp;
 		argv_check(argv, pipex);
 		find_path(pipex, envp);
 		if (pipe(pipex->fd) == -1)
