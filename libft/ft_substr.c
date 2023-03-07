@@ -6,12 +6,15 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 15:51:14 by yoonslee          #+#    #+#             */
-/*   Updated: 2022/11/10 14:16:42 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/07 10:54:30 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+/*
+ft_substr(char const *s, unsigned int start, size_t len)
+*/
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char			*out;

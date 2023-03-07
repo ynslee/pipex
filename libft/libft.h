@@ -61,6 +61,7 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 char	**ft_split(char const *s, char c);
+char	*ft_split_one_str_out(char const *s, char c);
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
 int		ft_lstsize(t_list *lst);
@@ -87,5 +88,6 @@ char	*get_next_line_bonus(int fd);
 char	*read_line_bonus(char *stash, int fd);
 char	*get_single_line_bonus(char *stash);
 char	*save_line_bonus(char	*stash);
+
 
 #endif

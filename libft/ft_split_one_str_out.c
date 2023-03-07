@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   ft_split_one_str_out.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/09 14:20:31 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/03/07 14:59:36 by yoonslee         ###   ########.fr       */
+/*   Created: 2023/03/07 14:59:54 by yoonslee          #+#    #+#             */
+/*   Updated: 2023/03/07 15:20:05 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_count_words(char const *s, char c)
+static int	ft_count_words_one_str_out(char const *s, char c)
 {
 	int	count_word;
 
@@ -29,20 +29,17 @@ static int	ft_count_words(char const *s, char c)
 	return (count_word);
 }
 
-static char	**ft_freeall(char **out)
+static char	*ft_freeall_one_str_out(char *out)
 {
 	int	i;
 
 	i = 0;
-	while (out[i])
-	{
-		free(out[i++]);
-	}
 	free(out);
+	out = NULL;
 	return (NULL);
 }
 
-static void	ft_putintostr(char **str, char const *s, char c)
+static void	ft_putintostr_one_str_out(char *str, char const *s, char c)
 {
 	char const	*tmp;
 
@@ -56,30 +53,30 @@ static void	ft_putintostr(char **str, char const *s, char c)
 			tmp++;
 		if (*tmp == c || tmp > s)
 		{
-			*str = ft_substr(s, 0, tmp - s);
+			str = ft_substr(s, 0, tmp - s);
 			if (!str || !*str)
 			{
-				ft_freeall(str);
+				ft_freeall_one_str_out(str);
 				return ;
 			}
 			s = tmp;
 			str++;
 		}
 	}
-	*str = NULL;
+	str = NULL;
 }
 
-char	**ft_split(char const *s, char c)
+char	*ft_split_one_str_out(char const *s, char c)
 {
-	char	**out;
+	char	*out;
 	int		count_word;
 
 	if (!s)
 		return (NULL);
-	count_word = ft_count_words(s, c);
-	out = (char **)malloc(sizeof(char *) * (count_word + 1));
+	count_word = ft_count_words_one_str_out(s, c);
+	out = (char *)malloc(sizeof(char *) * (count_word + 1));
 	if (!out)
 		return (NULL);
-	ft_putintostr(out, s, c);
+	ft_putintostr_one_str_out(out, s, c);
 	return (out);
 }
