@@ -89,5 +89,4 @@ char	*read_line_bonus(char *stash, int fd);
 char	*get_single_line_bonus(char *stash);
 char	*save_line_bonus(char	*stash);
 
-
 #endif

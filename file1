@@ -1,0 +1,13 @@
+Makefile
+children_process.c
+children_process.o
+error_msg.c
+error_msg.o
+file1
+free_close.c
+free_close.o
+libft
+pipex
+pipex.c
+pipex.h
+pipex.o

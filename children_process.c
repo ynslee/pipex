@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 16:56:26 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/03/03 14:26:07 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/09 11:37:40 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	first_child_process(t_pipex *pipex)
 {
 	pipex->pid1 = fork();
 	if (pipex->pid1 < 0)
-		exit(1);
+		error_msg(pipex, 3);
 	if (pipex->pid1 == 0)
 	{
 		if (dup2(pipex->fd[1], STDOUT_FILENO) == -1)
@@ -26,8 +26,8 @@ void	first_child_process(t_pipex *pipex)
 		close_all(pipex);
 		if (!pipex->cmd1_path)
 		{
-			ft_putstr_fd("Error; first command not found\n", 2);
-			exit(127);
+			ft_putstr_fd("command not found", 2);
+			exit(126);
 		}
 		if (execve(pipex->cmd1_path, pipex->cmd1_argv, pipex->envp) < 0)
 		{
@@ -51,12 +51,12 @@ void	second_child_process(t_pipex *pipex)
 		close_all(pipex);
 		if (!pipex->cmd2_path)
 		{
-			ft_putstr_fd("Error; second command not found\n", 2);
-			exit(127);
+			ft_putstr_fd("command not found", 2);
+			exit(126);
 		}
 		if (execve(pipex->cmd2_path, pipex->cmd2_argv, pipex->envp) < 0)
 		{
-			perror("error, child1 execve failed");
+			perror("error, child2 execve failed");
 			exit(1);
 		}
 	}

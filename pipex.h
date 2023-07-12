@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 14:59:12 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/03/07 15:23:52 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/13 08:54:51 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-# include <stdio.h>//perror, strerror
-# include <sys/wait.h>//wait, waitpid
+# include <stdio.h>
+# include <sys/wait.h>
 # include <fcntl.h>
 # include <errno.h>
-# include <string.h>
 # include "libft/libft.h"
 
 typedef struct s_pipex{

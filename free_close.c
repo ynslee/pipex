@@ -6,7 +6,7 @@
 /*   By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 16:54:10 by yoonslee          #+#    #+#             */
-/*   Updated: 2023/03/03 14:46:24 by yoonslee         ###   ########.fr       */
+/*   Updated: 2023/03/08 12:47:29 by yoonslee         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,16 @@ void	free_str_array(char **str)
 
 void	free_all(t_pipex *pipex)
 {
-	free(pipex->path);
+	if (pipex->path)
+		free_str_array(pipex->path);
 	if (pipex->cmd1_path)
 		free(pipex->cmd1_path);
 	if (pipex->cmd2_path)
 		free(pipex->cmd2_path);
-	free_str_array(pipex->cmd1_argv);
-	free_str_array(pipex->cmd2_argv);
+	if (pipex->cmd1_argv)
+		free_str_array(pipex->cmd1_argv);
+	if (pipex->cmd2_argv)
+		free_str_array(pipex->cmd2_argv);
 	free(pipex);
 }
 
