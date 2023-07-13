@@ -1,0 +1,10 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/yoonslee/Desktop/pipex_git'
+cc -c -Wall -Wextra -Werror -g pipex.c error_msg.c children_process.c free_close.c
+cc -c -Wall -Wextra -Werror -g pipex.c error_msg.c children_process.c free_close.c
+cc -c -Wall -Wextra -Werror -g pipex.c error_msg.c children_process.c free_close.c
+cc -c -Wall -Wextra -Werror -g pipex.c error_msg.c children_process.c free_close.c
+make -C libft all
+cc -Wall -Wextra -Werror -g pipex.o error_msg.o children_process.o free_close.o libft/libft.a -o pipex
+make: Leaving directory `/Users/yoonslee/Desktop/pipex_git'
+ 
