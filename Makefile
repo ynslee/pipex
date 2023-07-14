@@ -6,7 +6,7 @@
 #    By: yoonslee <yoonslee@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/17 14:59:05 by yoonslee          #+#    #+#              #
-#    Updated: 2023/03/08 10:27:47 by yoonslee         ###   ########.fr        #
+#    Updated: 2023/07/14 11:38:27 by yoonslee         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = pipex
 
 SRCS = pipex.c error_msg.c children_process.c free_close.c
 OBJS = $(SRCS:.c=.o)
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
